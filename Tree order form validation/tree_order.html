@@ -1,0 +1,145 @@
+<!-- Oscar Chiqui | Code template: https://github.com/claraj/week4-examples/blob/main/form_errors/tree_order_form_lab_template.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Tree Order Form</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+      
+      input, select {
+          width: 100%;
+          padding: 5px;
+          margin: 5px 5px 5px 0px;
+          box-sizing: border-box;
+      }
+
+      input.error, select.error {
+        border: 2px red solid;
+      }
+
+  </style>
+
+</head>
+<body>
+
+    <h1>Minnesota Tree Order Form</h1>
+
+    <p>Enter information to order your tree. All fields are required.</p>
+
+    <h2>Order Information</h2>
+
+    <label for="homeowner-name">Homeowner Name</label><input id="homeowner-name" name="homeowner-name">
+    <br>
+    <label for="homeowner-house-number">House Number</label><input id="homeowner-house-number" name="homeowner-house-number">
+    <br>
+    <label for="homeowner-street-name">Street Name</label><input id="homeowner-street-name" name="homeowner-street-name">
+    <br>
+    <label for="city">City</label><input id="city" name="city"> 
+    <br>
+    <!-- All orders must be for Minnesota, so this input is not editable -->
+    <label for="state">State</label><input id="state" name="state" value="Minnesota" disabled> 
+    <br>
+    <label for="zipcode">Zip Code</label><input id="zipcode" name="zipcode">
+    <br>
+
+    <label for="tree-type">Tree Type</label>
+    <select id="tree-type">
+        <!-- Unselectable message shown. Since this will be required, it forces the user to actually pick a tree, not just click submit for the default first option -->
+        <option disabled selected value=""> Select a tree </option>  
+        <!-- The options that the user will be allowed to select, or choose from -->
+        <option name="tree-type">Cedar</option>
+        <option name="tree-type">Maple</option>
+        <option name="tree-type">Oak</option>
+    </select>
+    <br>
+
+    <button id="submit-order">Submit Order</button>    
+
+    <h2>Order Summary</h2>
+
+    <p id="order-summary">
+        <!-- TODO Use JavaScript to display the order information, 
+            only if all the required information is entered  -->
+    </p>
+    
+
+
+<script>
+
+    let homeownerNameInput = document.querySelector('#homeowner-name')
+    let homeownerHouseNumberInput = document.querySelector('#homeowner-house-number')
+    let homeownerStreetNameInput = document.querySelector('#homeowner-street-name')
+    let treeTypeSelect = document.querySelector('#tree-type')
+    let cityInput = document.querySelector('#city')        //  A variable for city input element
+    let zipCodeInput = document.querySelector('#zipcode')   // A variable for zip code input element
+    
+    let submitButton = document.querySelector('#submit-order')
+
+    let orderSummaryParagraph = document.querySelector('#order-summary')
+
+    submitButton.addEventListener('click', function() {
+
+        // all six input and select elements have been completed
+        //  - check they all have a value
+        let name = homeownerNameInput.value 
+        let houseNumber = homeownerHouseNumberInput.value
+        let streetName = homeownerStreetNameInput.value
+        let treeType = treeTypeSelect.value
+        let city = cityInput.value          //  the value from the input#city
+        let zipCode = zipCodeInput.value      // the value from the input#zipcode
+
+
+        //Array to hold error messages
+
+        let errors = []
+
+        if(!name) {
+            errors.push('Enter your name')
+        }
+
+        if (!houseNumber) {
+            errors.push('Enter your house number')
+        }
+        
+        if (!streetName) {
+            errors.push('Enter your street name')
+        }
+
+        if (!treeType) {
+            errors.push('Select a tree type')
+        }
+
+        if (!city) {
+            errors.push('Enter your city')
+        }
+
+    // Validate the zipcode is in the range 55001 and 56763. 
+
+        if (!zipCode || zipCode < 55001 || zipcode > 56763) {
+            errors.push('Enter a valid zip code between 55001 - 56763')
+        }
+
+
+    // the class .error to any inputs with an error (and only inputs with an error)
+        // to give the user visual feedback for which inputs need to be fixed or completed.
+        if (errors.length > 0) {
+            let errorMsg = errors.join('\n')
+            alert(errorMsg)
+            return
+        }
+
+    // If there are no errors, the template string display an order Summary as result.
+        // summary in the order summary paragraph.
+        orderSummaryParagraph.innerHTML = `Thank you for your order, ${name} | Shipping Address: ${houseNumber} ${streetName}, ${city}, MN ${zipCode} | Tree type: ${treeType}`
+
+        
+    })
+
+
+
+</script>
+
+</body>
+</html>
